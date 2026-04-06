@@ -17,6 +17,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/gorilla/websocket"
+	"github.com/joho/godotenv"
 	amqp "github.com/rabbitmq/amqp091-go"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
@@ -101,6 +102,9 @@ var upgrader = websocket.Upgrader{
 }
 
 func main() {
+	// Membaca file .env jika ada (ignore error jika file tidak ada)
+	_ = godotenv.Load()
+
 	port := env("PORT", "8081")
 	rabbitURL := env("RABBITMQ_URL", "amqp://guest:guest@rabbitmq:5672/")
 	exchange := env("NOTIFICATION_EXCHANGE", "notification_events")
