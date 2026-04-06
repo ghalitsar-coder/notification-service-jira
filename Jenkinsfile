@@ -70,6 +70,10 @@ pipeline {
         stage('🚀 Deploy to Minikube') {
             steps {
                 sh """
+                    echo "Applying Kubernetes manifests (creating if not exist)..."
+                    kubectl apply -f ../kubernetes/k8s/05-rabbitmq.yaml -n ${K8S_NAMESPACE} || true
+                    kubectl apply -f ../kubernetes/k8s/06-notification-service.yaml -n ${K8S_NAMESPACE} || true
+
                     echo "Updating deployment image..."
                     kubectl set image deployment/${K8S_DEPLOY} \
                         ${K8S_CONTAINER}=${IMAGE_NAME}:${IMAGE_TAG} \
